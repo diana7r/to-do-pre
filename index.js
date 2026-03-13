@@ -22,6 +22,12 @@ function loadTasks() {
 	}
 }
 
+function updateTasksAndSave(){
+	const items = getTasksFromDOM();
+	saveTasks(items);
+}
+
+
 function createItem(item) {
 
 	const template = document.getElementById("to-do__item-template");
@@ -36,10 +42,7 @@ function createItem(item) {
 	// обработчик для кнопки удаления 
 	deleteButton.addEventListener('click', function() {
 		clone.remove();
-
-		const items = getTasksFromDOM();
-
-		saveTasks(items);
+		updateTasksAndSave();
 	});
 
 	// обработчик для кнопки копирования 
@@ -48,10 +51,8 @@ function createItem(item) {
 		const newItem = createItem(itemName);
 
 		listElement.prepend(newItem);
+		updateTasksAndSave();
 
-		const items = getTasksFromDOM();
-
-		saveTasks(items);
 	});
 
 	// обработчик для кнопки редактирования 
@@ -64,10 +65,7 @@ function createItem(item) {
 	// обработчик 2 для кнопки редактирования 
 	textElement.addEventListener('blur', function(){
 		textElement.setAttribute('contenteditable', 'false');
-
-		const items = getTasksFromDOM();
-
-		saveTasks(items);
+		updateTasksAndSave();
 	});
 
 	return clone; // возвращаем готовую разметку элемента 
@@ -111,10 +109,8 @@ formElement.addEventListener('submit', function(event) {
 		const taskElement = createItem(taskText);
 		listElement.prepend(taskElement);
 
-		items = getTasksFromDOM();
-
-		saveTasks(items); // сохраняем текущий список задач в лок хранилище 
-
+		updateTasksAndSave();
+		
 		inputElement.value = ''; // очищаем поле ввода
 	}
 });
